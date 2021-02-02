@@ -47,3 +47,101 @@
 
 - FlowOperator 是将流程操作封装，隐藏细节，供外部方便调用的流程操作类。
 
+# FlowOperator
+
+下面是引用方可调用的方法：
+
+```java
+ /**
+     * 新增流程定义
+     */
+    public void createProcessDefine(ProcessDefine processDefine) {
+        repositoryService.saveProcessDefine(processDefine);
+    }
+
+    /**
+     * 新增流程节点
+     */
+    public void createProcessNode(ProcessNode processNode) {
+        repositoryService.saveProcessNode(processNode);
+    }
+
+    /**
+     * 列出流程节点
+     */
+    public List<ProcessNode> listProcessNode(String procDefKey) {
+        return repositoryService.listProcessNode(procDefKey);
+    }
+
+    /**
+     * 获得流程节点示例
+     */
+    public ProcessInstance getInstance(String procDefKey, String businessKey) {
+        return runtimeService.getInstance(procDefKey, businessKey);
+    }
+
+    /**
+     * 启动流程
+     */
+    public ProcessInstance startProcess(String defineKey, String businessKey, String assigneeName, String remark) {
+        return runtimeService.startProcessInstanceByKey(defineKey, null, businessKey, assigneeName, remark);
+    }
+
+    /**
+     * 终止流程
+     */
+    public void stopProcess(String defineKey, String businessKey, String assigneeName, String remark) {
+        runtimeService.stopProcess(defineKey, businessKey, assigneeName, remark);
+    }
+
+    /**
+     * 通过流程任务
+     */
+    public void completeTask(String procDefKey, String businessKey, String assigneeName, String remark) {
+        taskService.completeTask(procDefKey, businessKey, assigneeName, remark);
+    }
+
+    /**
+     * 拒绝流程任务
+     */
+    public void rejectTask(String procDefKey, String businessKey, String assigneeName, String remark) {
+        taskService.rejectTask(procDefKey, businessKey, assigneeName, remark);
+    }
+
+    /**
+     * 列出流程历史记录
+     */
+    public List<ProcessHistory> listHistory(String procDefKey, String businessKey) {
+        return historyService.list(procDefKey, businessKey);
+    }
+```
+  
+# 使用
+
+## 导入依赖
+
+```
+    <dependency>
+            <groupId>com.wolwo</groupId>
+            <artifactId>iflow</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+```
+
+## 注入bean
+
+```java
+    @Autowired
+    FlowOperator flowOperator;
+
+```
+## 调用FlowOperator的api
+
+```java
+    /**
+     * 列出流程节点
+     */
+    public List<ProcessNode> listNodes(String procDefKey) {
+        return flowOperator.listProcessNode(procDefKey);
+    }
+```
